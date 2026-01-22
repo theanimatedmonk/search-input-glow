@@ -1,0 +1,247 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+    padding: 200px 20px;
+    margin: 0 auto;
+}
+
+/* Globe Icon Styles */
+.globe-container {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.globe-icon {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 4px 12px rgba(79, 70, 229, 0.3));
+}
+
+/* Search Container Styles */
+.search-container {
+    position: relative;
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 700px;
+    height: 58px;
+}
+
+#search-bar-rive {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    opacity: 0.5;
+    transform: translate(-50%, -48.5%);
+}
+
+
+
+
+.search-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    background: white;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    padding: 20px 20px;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(190, 163, 252, 0.4);
+    z-index: 2;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    color: #1f2937;
+    background: transparent;
+    padding: 0;
+}
+
+.search-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+    .container {
+        align-items: center;
+        margin: 0 auto;
+        gap: 30px;
+        padding: 20px 4px;
+    }
+
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .search-wrapper {
+        width: 100%;
+    }
+    
+    .globe-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .container {
+        gap: 50px;
+        padding: 40px 8px;
+        margin: 0 auto;
+    }
+    
+    .search-input-wrapper {
+        padding: 16px 16px;
+        gap: 8px;
+    }
+    
+    .icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .search-input {
+        font-size: 16px;
+    }
+    #search-bar-rive {
+        transform: translate(-50%, -50%);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        align-items: center;
+        gap: 30px;
+        padding: 20px 4px;
+        margin: 0 auto;
+    }
+    
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 320px;
+    }
+
+    .search-wrapper {
+        width: 100%;
+    }
+
+    #search-bar-rive {
+        transform: translate(-50%, -50.5%);
+    }
+}
+
+/* Recent Searches Styles */
+.recent-searches {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.recent-searches-title {
+    font-size: 20px;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.recent-searches-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.recent-search-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.recent-search-item:last-child {
+    border-bottom: none;
+}
+
+.recent-search-item:hover {
+    background-color: #f9fafb;
+}
+
+.history-icon {
+    width: 20px;
+    height: 20px;
+    color: #9ca3af;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.search-query {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+}
+
+/* Responsive for Recent Searches */
+@media (max-width: 768px) {
+    .recent-searches {
+        max-width: 95%;
+        margin-top: 30px;
+    }
+    
+    .recent-searches-title {
+        font-size: 16px;
+    }
+    
+    .search-query {
+        font-size: 14px;
+    }
+}
+
