@@ -186,3 +186,216 @@ if (document.readyState === 'loading') {
     renderRecentSearches();
 }
 
+// Voice Recognition Setup
+let recognition = null;
+let isListening = false;
+
+function initVoiceRecognition() {
+    // Check if browser supports Web Speech API
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = () => {
+            isListening = true;
+            showVoiceOverlay();
+            updateVoiceStatus('Speak now', true);
+        };
+        
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            updateVoiceStatus('Got it!', false);
+            
+            // Open Google search in a new tab
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(transcript)}`;
+            window.open(searchUrl, '_blank');
+            
+            setTimeout(() => {
+                hideVoiceOverlay();
+            }, 500);
+        };
+        
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error:', event.error);
+            isListening = false;
+            updateVoiceStatus('Try again', false);
+            setTimeout(() => {
+                hideVoiceOverlay();
+            }, 1500);
+        };
+        
+        recognition.onend = () => {
+            isListening = false;
+            if (document.getElementById('voice-search-overlay').classList.contains('active')) {
+                setTimeout(() => {
+                    hideVoiceOverlay();
+                }, 500);
+            }
+        };
+    } else {
+        console.warn('Speech recognition not supported in this browser');
+    }
+}
+
+// Initialize voice recognition when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        initVoiceRecognition();
+        setupMicClickListener();
+    });
+} else {
+    initVoiceRecognition();
+    setupMicClickListener();
+}
+
+function showVoiceOverlay() {
+    const overlay = document.getElementById('voice-search-overlay');
+    const micButton = document.getElementById('voice-mic-button');
+    const waves = document.querySelector('.voice-waves');
+    if (overlay) {
+        overlay.classList.add('active');
+        if (micButton) micButton.classList.add('listening');
+        if (waves) waves.classList.add('active');
+    }
+}
+
+function hideVoiceOverlay() {
+    const overlay = document.getElementById('voice-search-overlay');
+    const micButton = document.getElementById('voice-mic-button');
+    const waves = document.querySelector('.voice-waves');
+    if (overlay) {
+        overlay.classList.remove('active');
+        if (micButton) micButton.classList.remove('listening');
+        if (waves) waves.classList.remove('active');
+    }
+}
+
+function updateVoiceStatus(text, listening) {
+    const statusText = document.getElementById('voice-status-text');
+    if (statusText) {
+        statusText.textContent = text;
+        if (listening) {
+            statusText.classList.add('listening');
+        } else {
+            statusText.classList.remove('listening');
+        }
+    }
+}
+
+function setupMicClickListener() {
+    const micIcon = document.getElementById('mic-icon');
+    const voiceMicButton = document.getElementById('voice-mic-button');
+    
+    if (micIcon && recognition) {
+        micIcon.style.cursor = 'pointer';
+        micIcon.addEventListener('click', () => {
+            if (!isListening) {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error('Error starting recognition:', error);
+                }
+            } else {
+                recognition.stop();
+            }
+        });
+    } else if (micIcon && !recognition) {
+        micIcon.style.cursor = 'not-allowed';
+        micIcon.style.opacity = '0.5';
+    }
+    
+    // Also allow clicking the large mic button in overlay to stop
+    if (voiceMicButton && recognition) {
+        voiceMicButton.addEventListener('click', () => {
+            if (isListening) {
+                recognition.stop();
+            }
+        });
+    }
+    
+    // Close overlay when clicking outside
+    const overlay = document.getElementById('voice-search-overlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                if (isListening) {
+                    recognition.stop();
+                }
+                hideVoiceOverlay();
+            }
+        });
+    }
+}
+
+// Toggle between mic and clear icon based on input value
+function toggleSearchIcons() {
+    const searchInput = document.getElementById('search-input');
+    const micIcon = document.getElementById('mic-icon');
+    const clearIcon = document.getElementById('clear-icon');
+    
+    if (searchInput && micIcon && clearIcon) {
+        if (searchInput.value.length > 0) {
+            micIcon.style.display = 'none';
+            clearIcon.style.display = 'block';
+        } else {
+            micIcon.style.display = 'block';
+            clearIcon.style.display = 'none';
+        }
+    }
+}
+
+// Clear search input
+function clearSearchInput() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+        toggleSearchIcons();
+    }
+}
+
+// Perform search
+function performSearch() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput && searchInput.value.trim().length > 0) {
+        const searchQuery = searchInput.value.trim();
+        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+        window.open(searchUrl, '_blank');
+    }
+}
+
+// Initialize search input handlers
+function initSearchInputHandlers() {
+    const searchInput = document.getElementById('search-input');
+    const clearIcon = document.getElementById('clear-icon');
+    
+    if (searchInput) {
+        // Toggle icons on input
+        searchInput.addEventListener('input', toggleSearchIcons);
+        
+        // Handle Enter key
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    }
+    
+    if (clearIcon) {
+        clearIcon.style.cursor = 'pointer';
+        clearIcon.addEventListener('click', clearSearchInput);
+    }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSearchInputHandlers);
+} else {
+    initSearchInputHandlers();
+}
+

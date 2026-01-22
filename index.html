@@ -26,9 +26,12 @@
 
                 <!-- Search Input -->
                 <div class="search-input-wrapper">
-                   <img src="assets/search.svg" alt="search icon" >
-                    <input type="text" class="search-input" placeholder="Search">
-                   <img src="assets/mic.svg" alt="microphone icon" ">
+                   <img src="assets/search.svg" alt="search icon" class="icon">
+                    <input type="text" class="search-input" placeholder="Search" id="search-input">
+                   <img src="assets/mic.svg" alt="microphone icon" class="icon" id="mic-icon">
+                   <svg class="icon" id="clear-icon" style="display: none;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                   </svg>
                 </div>
             </div>
         </div>
@@ -37,6 +40,27 @@
         <div class="recent-searches">
             <h3 class="recent-searches-title">Recent Searches</h3>
             <div class="recent-searches-list">
+                <!-- Items will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Voice Search Overlay -->
+    <div class="voice-search-overlay" id="voice-search-overlay">
+        <div class="voice-search-modal">
+            <div class="voice-search-content">
+                <div class="voice-search-title">Google</div>
+                <div class="voice-mic-container">
+                    <div class="voice-mic-button" id="voice-mic-button">
+                        <img src="assets/mic.svg" alt="microphone" class="voice-mic-icon">
+                    </div>
+                    <div class="voice-waves">
+                        <div class="wave wave-1"></div>
+                        <div class="wave wave-2"></div>
+                        <div class="wave wave-3"></div>
+                    </div>
+                </div>
+                <div class="voice-status-text" id="voice-status-text">Speak now</div>
             </div>
         </div>
     </div>

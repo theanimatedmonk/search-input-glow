@@ -61,7 +61,7 @@ body {
     left: 50%;
     top: 50%;
     opacity: 0.5;
-    transform: translate(-50%, -48.5%);
+    transform: translate(-50%, -47%);
 }
 
 
@@ -84,6 +84,27 @@ body {
 .icon {
     width: 32px;
     height: 32px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#mic-icon {
+    cursor: pointer;
+}
+
+#mic-icon:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+#clear-icon {
+    cursor: pointer;
+    color: #6b7280;
+    stroke: currentColor;
+}
+
+#clear-icon:hover {
+    color: #1f2937;
+    transform: scale(1.1);
 }
 
 .search-input {
@@ -242,6 +263,187 @@ body {
     
     .search-query {
         font-size: 14px;
+    }
+}
+
+/* Voice Search Overlay */
+.voice-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.voice-search-overlay.active {
+    display: flex;
+}
+
+.voice-search-modal {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 60px 80px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    min-width: 400px;
+}
+
+.voice-search-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.voice-search-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+}
+
+.voice-mic-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.voice-mic-button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #4285f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+    transition: transform 0.2s ease;
+    z-index: 2;
+}
+
+.voice-mic-button:hover {
+    transform: scale(1.05);
+}
+
+.voice-mic-button.listening {
+    background-color: #4285f4;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.voice-mic-icon {
+    width: 48px;
+    height: 48px;
+    filter: brightness(0) invert(1);
+}
+
+.voice-waves {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.wave {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid #4285f4;
+    opacity: 0;
+    animation: wave-animation 2s ease-out infinite;
+}
+
+.wave-1 {
+    animation-delay: 0s;
+}
+
+.wave-2 {
+    animation-delay: 0.5s;
+}
+
+.wave-3 {
+    animation-delay: 1s;
+}
+
+.voice-waves.active .wave {
+    animation-play-state: running;
+}
+
+.voice-waves.active .wave-1 {
+    border-color: #4285f4;
+}
+
+.voice-waves.active .wave-2 {
+    border-color: #4285f4;
+}
+
+.voice-waves.active .wave-3 {
+    border-color: #4285f4;
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.voice-status-text {
+    font-size: 18px;
+    color: #5f6368;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
+}
+
+.voice-status-text.listening {
+    color: #4285f4;
+}
+
+/* Responsive for Voice Search */
+@media (max-width: 768px) {
+    .voice-search-modal {
+        padding: 40px 30px;
+        min-width: 90%;
+        max-width: 350px;
+    }
+    
+    .voice-mic-button {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .voice-mic-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .voice-search-title {
+        font-size: 20px;
+    }
+    
+    .voice-status-text {
+        font-size: 16px;
     }
 }
 
